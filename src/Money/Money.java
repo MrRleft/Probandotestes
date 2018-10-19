@@ -9,7 +9,7 @@ public class Money implements Comparable {
 	 * @param cantidad	
 	 * @param divisa	
 	 */
-	Money (int cantidad, Divisa divisa) {
+	public Money (int cantidad, Divisa divisa) {
 		this.cantidad = cantidad;
 		this.divisa = divisa;
 	}
@@ -19,7 +19,7 @@ public class Money implements Comparable {
 	 * @return Cantidad.
 	 */
 	public int getCantidad() {
-		
+		return this.cantidad;
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class Money implements Comparable {
 	 * @return Divisa asociada a esta cantidad
 	 */
 	public Divisa getDivisa() {
-		
+		return this.divisa;
 	}
 	
 	/**
@@ -37,7 +37,10 @@ public class Money implements Comparable {
 	 *  @return String con información de la moneda.
 	 */
 	public String toString() {
-		
+		String aux = "00";
+		if(this.cantidad%100 == 0)
+			aux = String.valueOf(this.cantidad%100);
+		return this.cantidad/100 + "." + aux + " " + this.divisa.getName();
 	}
 	
 	/**
@@ -45,7 +48,7 @@ public class Money implements Comparable {
 	 * @return Valor universal de la cantidad
 	 */
 	public int valorUniversal() {
-		
+		return this.divisa.valorUniversal(cantidad);
 	}
 	
 	/**
@@ -54,7 +57,7 @@ public class Money implements Comparable {
 	 * @return Boolean indicando equivalencia
 	 */
 	public Boolean equals(Money otra) {
-		
+		return this.compareTo(otra) == 0;
 	}
 	
 	/**
@@ -63,7 +66,8 @@ public class Money implements Comparable {
 	 * @return Un nuevo objeto Money con la divisa del actual, y la cantidad acumulada con el importe del objeto Money recibido.
 	 **/
 	public Money add(Money otra) {
-		
+		this.cantidad += this.divisa.valorEnEstaDivisa(otra.cantidad, otra.divisa);
+		return this;
 	}
 
 		
@@ -72,7 +76,7 @@ public class Money implements Comparable {
 	 * @return True si cantidad es cero, false e.o.c.
 	 */
 	public Boolean isZero() {
-		
+		return this.cantidad == 0;
 
 	}
 	/**
@@ -80,7 +84,8 @@ public class Money implements Comparable {
 	 * @return Un nuevo objeto Money con la cantidad en negativo
 	 */
 	public Money negate() {
-	
+		this.cantidad = -this.cantidad;
+		return this;
 	}
 	
 	/**
@@ -90,7 +95,18 @@ public class Money implements Comparable {
 	 * Un entero positivo si el objeto actual tiene más valor que el recibido
 	 */
 	public int compareTo(Object otra) {
+		
+		Money otra1 = (Money) (otra);
+		return this.cantidad - this.divisa.valorEnEstaDivisa(otra1.cantidad, otra1.divisa);
 			
 		
+		
 	}
+
+	public Money sub(Money otra) {
+		
+		this.cantidad = this.cantidad -this.divisa.valorEnEstaDivisa(otra.cantidad, otra.divisa) ;
+		return this;
+	}
+
 }

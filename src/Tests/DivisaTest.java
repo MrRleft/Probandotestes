@@ -1,4 +1,4 @@
-package Money;
+package Tests;
 
 import static org.junit.Assert.*;
 
